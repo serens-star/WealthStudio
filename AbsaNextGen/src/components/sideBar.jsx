@@ -10,6 +10,18 @@ const navPages = [
     label: "Strategy Tracks",
     to: "/Tracks",
   },
+  {
+    label: "Simulation Lab",
+    to: "/Simulation",
+  },
+  {
+    label: "Learn More",
+    to: "/Learn",
+  },
+  {
+    label: "Profile",
+    to: "/Profile",
+  },
 ];
 
 export default function sideBar() {
