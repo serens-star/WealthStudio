@@ -1,11 +1,19 @@
 .sidebar {
-  width: 240px;
+  width: 210px;
   height: 100vh;
-  background: white;
-  border-right: 1px solid #eee;
-  padding: 20px;
+  background: rgba(24, 101, 172, 0.49);
+  border-right: 2px solid #000000;
+
+  padding: 30px 15px;
+  gap: 20px;
   display: flex;
   flex-direction: column;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .logo {
@@ -15,17 +23,19 @@
 }
 
 .nav-link {
-  display: block;
-  padding: 10px 12px;
-  margin-bottom: 8px;
+  font-size: 17px;
+  display: flex;
+  padding: 11px 14px;
+  align-items: center;
+  margin-bottom: 10px;
   text-decoration: none;
-  color: #333;
-  border-radius: 8px;
+  color: #000000;
+  border-radius: 10px;
   transition: 0.2s;
 }
 
 .nav-link:hover {
-  background: #f3f4f6;
+  background: #f3f5f6;
 }
 
 .nav-link.active {

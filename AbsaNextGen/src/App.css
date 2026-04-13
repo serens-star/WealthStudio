@@ -185,10 +185,10 @@
 
 .app-container {
   display: flex;
-  background-color: blueviolet;
+  background: rgb(0, 11, 74);
 }
 
 .main-content {
   flex: 1;
-  padding: 24px;
+  padding: 25px;
 }

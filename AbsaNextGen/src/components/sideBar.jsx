@@ -7,15 +7,15 @@ const navPages = [
     to: "/",
   },
   {
-    label: "Strategy Tracks",
+    label: "Tracks",
     to: "/Tracks",
   },
   {
-    label: "Simulation Lab",
+    label: "Simulate",
     to: "/Simulation",
   },
   {
-    label: "Learn More",
+    label: "Learn",
     to: "/Learn",
   },
   {
@@ -24,7 +24,7 @@ const navPages = [
   },
 ];
 
-export default function sideBar() {
+export default function  SideBar() {
   return (
     <div className="sidebar">
       <h2>NGWS</h2>
