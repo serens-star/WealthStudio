@@ -11,7 +11,7 @@ const navItems = [
 
 export default function SideBar() {
   return (
-    <div classname="sidebar">
+    <div className="sidebar">
       <div className="sidebar__brand">
         <span className="sidebar__brand-mark">NW</span>
         <span className="sidebar__brand-name">NextGen Wealth</span>
