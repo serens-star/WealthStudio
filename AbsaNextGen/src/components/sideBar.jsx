@@ -1,49 +1,48 @@
 import { NavLink } from "react-router-dom";
-import "../styles/sideBar.css";
+import "./SideBar.css";
 
-const navPages = [
-  {
-    label: "Money Snapshot",
-    to: "/",
-  },
-  {
-    label: "Tracks",
-    to: "/Tracks",
-  },
-  {
-    label: "Simulate",
-    to: "/Simulation",
-  },
-  {
-    label: "Learn",
-    to: "/Learn",
-  },
-  {
-    label: "Profile",
-    to: "/Profile",
-  },
+const navItems = [
+  { label: "Home", to: "/" },
+  { label: "Tracks", to: "/tracks" },
+  { label: "Simulate", to: "/simulate" },
+  { label: "Learn", to: "/learn" },
+  { label: "Profile", to: "/profile" },
 ];
 
-export default function  SideBar() {
+export default function SideBar() {
   return (
-    <div className="sidebar">
-      <h2>NGWS</h2>
+    <div classname="sidebar">
+      <div className="sidebar__brand">
+        <span className="sidebar__brand-mark">NW</span>
+        <span className="sidebar__brand-name">NextGen Wealth</span>
+      </div>
 
-      <nav>
-        <ul>
-          {navPages.map((page) => (
-            <NavLink
-              key={page.to}
-              to={page.to}
-              className={({ isActive }) =>
-                isActive ? "nav-link active" : "nav-link"
-              }
-            >
-              {page.label}
-            </NavLink>
-          ))}
-        </ul>
+      <nav className="sidebar__nav">
+        {navItems.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.to === "/"}
+            className={({ isActive }) =>
+              isActive ? "sidebar__link sidebar__link--active" : "sidebar__link"
+            }
+          >
+            {item.label}
+          </NavLink>
+        ))}
       </nav>
+
+      <div className="sidebar__footer">
+        <button
+          className="sidebar__logout"
+          onClick={() => {
+            localStorage.removeItem("currentUser");
+            window.location.href = "/login";
+          }}
+        >
+          Log out
+        </button>
+      </div>
     </div>
   );
 }
