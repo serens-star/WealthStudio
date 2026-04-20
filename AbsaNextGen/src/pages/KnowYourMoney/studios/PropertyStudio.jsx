@@ -1,0 +1,248 @@
+import { useState } from "react";
+import "./Studio.css";
+
+function formatR(value) {
+  return `R ${Math.round(value).toLocaleString("en-ZA")}`;
+}
+
+export default function PropertyStudio() {
+  const [inputs, setInputs] = useState({
+    salary: 45000,
+    propertyPrice: 1200000,
+    deposit: 10,
+    interestRate: 11,
+    rentalCost: 12000,
+    years: 5,
+  });
+
+  const update = (key, value) => {
+    setInputs((prev) => ({ ...prev, [key]: Number(value) }));
+  };
+
+  const depositAmount = inputs.propertyPrice * (inputs.deposit / 100);
+  const loanAmount = inputs.propertyPrice - depositAmount;
+  const monthlyRate = inputs.interestRate / 100 / 12;
+  const months = inputs.years * 12;
+  const monthlyBond =
+    (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+    (Math.pow(1 + monthlyRate, months) - 1);
+
+  const levy = 2200;
+  const insurance = 800;
+  const totalMonthlyBuy = monthlyBond + levy + insurance;
+  const transferDuty =
+    inputs.propertyPrice > 1100000
+      ? (inputs.propertyPrice - 1100000) * 0.06
+      : 0;
+  const totalBuyCost = totalMonthlyBuy * months + depositAmount + transferDuty;
+
+  const totalRentCost = inputs.rentalCost * months;
+  const monthlyInvest = totalMonthlyBuy - inputs.rentalCost;
+  const investmentGrowth =
+    monthlyInvest > 0
+      ? monthlyInvest * ((Math.pow(1 + 0.09 / 12, months) - 1) / (0.09 / 12))
+      : 0;
+
+  const equityBuilt =
+    inputs.propertyPrice * Math.pow(1.05, inputs.years) - loanAmount;
+
+  const buyingWins = equityBuilt > investmentGrowth;
+
+  return (
+    <div className="studio">
+      <div className="studio__layout">
+        <div className="studio__inputs">
+          <p className="studio__inputs-label">Your numbers</p>
+
+          <div className="studio__field">
+            <div className="studio__field-header">
+              <label>Monthly salary (gross)</label>
+              <span>{formatR(inputs.salary)}</span>
+            </div>
+            <input
+              type="range"
+              min={20000}
+              max={100000}
+              step={1000}
+              value={inputs.salary}
+              onChange={(e) => update("salary", e.target.value)}
+            />
+          </div>
+
+          <div className="studio__field">
+            <div className="studio__field-header">
+              <label>Property price</label>
+              <span>{formatR(inputs.propertyPrice)}</span>
+            </div>
+            <input
+              type="range"
+              min={500000}
+              max={5000000}
+              step={50000}
+              value={inputs.propertyPrice}
+              onChange={(e) => update("propertyPrice", e.target.value)}
+            />
+          </div>
+
+          <div className="studio__field">
+            <div className="studio__field-header">
+              <label>Deposit (%)</label>
+              <span>{inputs.deposit}%</span>
+            </div>
+            <input
+              type="range"
+              min={5}
+              max={30}
+              step={1}
+              value={inputs.deposit}
+              onChange={(e) => update("deposit", e.target.value)}
+            />
+          </div>
+
+          <div className="studio__field">
+            <div className="studio__field-header">
+              <label>Interest rate (%)</label>
+            </div>
+            <input
+              type="number"
+              className="studio__number-input"
+              min={7}
+              max={20}
+              step={0.25}
+              value={inputs.interestRate}
+              onChange={(e) => update("interestRate", e.target.value)}
+            />
+          </div>
+
+          <div className="studio__field">
+            <div className="studio__field-header">
+              <label>Monthly rental alternative</label>
+            </div>
+            <input
+              type="number"
+              className="studio__number-input"
+              min={5000}
+              max={50000}
+              step={500}
+              value={inputs.rentalCost}
+              onChange={(e) => update("rentalCost", e.target.value)}
+            />
+          </div>
+
+          <div className="studio__field">
+            <div className="studio__field-header">
+              <label>Time horizon</label>
+              <span>{inputs.years} years</span>
+            </div>
+            <input
+              type="range"
+              min={1}
+              max={10}
+              step={1}
+              value={inputs.years}
+              onChange={(e) => update("years", e.target.value)}
+            />
+          </div>
+
+          <div className="studio__sa-note">
+            <p className="studio__sa-label">SA context applied</p>
+            <ul className="studio__sa-list">
+              <li>Transfer duty: {formatR(transferDuty)}</li>
+              <li>Levy estimate: R 2 200/month</li>
+              <li>Home insurance: R 800/month</li>
+              <li>Property appreciation: 5% per year</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="studio__outputs">
+          <p className="studio__inputs-label">Results</p>
+
+          <div className="studio__compare">
+            <div className="studio__compare-card">
+              <p className="studio__compare-label">If you buy</p>
+              <p className="studio__compare-value">{formatR(totalBuyCost)}</p>
+              <p className="studio__compare-sub">
+                Total cost over {inputs.years} years
+              </p>
+              <div className="studio__compare-rows">
+                <div className="studio__compare-row">
+                  <span>Monthly bond</span>
+                  <span>{formatR(monthlyBond)}</span>
+                </div>
+                <div className="studio__compare-row">
+                  <span>Levy + insurance</span>
+                  <span>{formatR(levy + insurance)}/month</span>
+                </div>
+                <div className="studio__compare-row">
+                  <span>Deposit paid</span>
+                  <span>{formatR(depositAmount)}</span>
+                </div>
+                <div className="studio__compare-row">
+                  <span>Transfer duty</span>
+                  <span>{formatR(transferDuty)}</span>
+                </div>
+                <div className="studio__compare-row studio__compare-row--highlight">
+                  <span>Equity built</span>
+                  <span>{formatR(equityBuilt)}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="studio__compare-card">
+              <p className="studio__compare-label">If you rent + invest</p>
+              <p className="studio__compare-value">{formatR(totalRentCost)}</p>
+              <p className="studio__compare-sub">
+                Total rent over {inputs.years} years
+              </p>
+              <div className="studio__compare-rows">
+                <div className="studio__compare-row">
+                  <span>Monthly rent</span>
+                  <span>{formatR(inputs.rentalCost)}</span>
+                </div>
+                <div className="studio__compare-row">
+                  <span>Monthly invested</span>
+                  <span>{formatR(Math.max(0, monthlyInvest))}</span>
+                </div>
+                <div className="studio__compare-row studio__compare-row--highlight">
+                  <span>Investment value</span>
+                  <span>{formatR(investmentGrowth)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={`studio__verdict ${
+              buyingWins ? "studio__verdict--buy" : "studio__verdict--rent"
+            }`}
+          >
+            <p className="studio__verdict-label">Studio verdict</p>
+            <p className="studio__verdict-title">
+              {buyingWins
+                ? "Buying builds more wealth over this horizon."
+                : "Renting and investing comes out ahead."}
+            </p>
+            <p className="studio__verdict-body">
+              {buyingWins
+                ? `After ${inputs.years} years, buying builds ${formatR(
+                    equityBuilt
+                  )} in equity. Renting and investing the difference grows to ${formatR(
+                    investmentGrowth
+                  )}. The property wins — but only if you stay long enough for appreciation to compound.`
+                : `After ${
+                    inputs.years
+                  } years, renting and investing the ${formatR(
+                    monthlyInvest
+                  )} monthly difference grows to ${formatR(
+                    investmentGrowth
+                  )} in liquid assets. Your equity from buying would be ${formatR(
+                    equityBuilt
+                  )}. At this time horizon, flexibility wins.`}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
