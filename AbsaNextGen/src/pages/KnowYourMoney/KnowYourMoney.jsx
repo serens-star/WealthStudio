@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { studios } from "../../data/studios.Data";
+import './KnowYourMoney.css';
 import PropertyStudio from "./studios/PropertyStudio";
 import CarStudio from "./studios/CarStudio";
 import OffshoreStudio from "./studios/OffshoreStudio";
@@ -7,7 +8,7 @@ import OffshoreStudio from "./studios/OffshoreStudio";
 function StudioCard({ studio, onOpen }) {
   return (
     <div className="studio-card">
-      <div claame="studio-card__body">
+      <div className="studio-card__body">
         <h3 className="studio-card__name">{studio.name}</h3>
         <p className="studio-card__tagline">{studio.tagline}</p>
         <p className="studio-card__desc">{studio.description}</p>
