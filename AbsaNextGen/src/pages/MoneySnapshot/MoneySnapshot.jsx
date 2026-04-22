@@ -1,4 +1,4 @@
-import { currentUser } from "../../data/userData";
+import { useUser } from "../../context/UserContext";
 import "./MoneySnapshot.css";
 
 function MetricTile({ label, value, sub }) {
@@ -42,6 +42,7 @@ function GoalCard({ name, current, target }) {
 }
 
 export default function MoneySnapshot() {
+  const { user } = useUser();
   const {
     name,
     initials,
@@ -55,7 +56,7 @@ export default function MoneySnapshot() {
     goals,
     nudges,
     trend,
-  } = currentUser;
+  } = user;
 
   const totalBreakdown = breakdown.reduce((sum, item) => sum + item.amount, 0);
 

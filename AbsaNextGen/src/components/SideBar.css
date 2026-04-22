@@ -87,3 +87,34 @@
   background: var(--color-danger-bg);
   color: var(--color-danger-text);
 }
+
+.sidebar__user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 4px;
+  margin-bottom: 8px;
+}
+
+.sidebar__user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.sidebar__user-name {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

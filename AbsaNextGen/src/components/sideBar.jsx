@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import "./SideBar.css";
 
 const navItems = [
@@ -10,13 +11,14 @@ const navItems = [
 ];
 
 export default function SideBar() {
+  const { user } = useUser();
+
   return (
     <div className="sidebar">
       <div className="sidebar__brand">
-        <span className="sidebar__brand-mark">NW</span>
+        <div className="sidebar__brand-mark">NW</div>
         <span className="sidebar__brand-name">NextGen Wealth</span>
       </div>
-
       <nav className="sidebar__nav">
         {navItems.map((item) => (
           <NavLink
@@ -31,8 +33,11 @@ export default function SideBar() {
           </NavLink>
         ))}
       </nav>
-
       <div className="sidebar__footer">
+        <div className="sidebar__user">
+          <div className="sidebar__user-avatar">{user.initials}</div>
+          <span className="sidebar__user-name">{user.name}</span>
+        </div>
         <button
           className="sidebar__logout"
           onClick={() => {
