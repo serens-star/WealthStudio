@@ -3,11 +3,11 @@ import { useUser } from "../context/UserContext";
 import "./SideBar.css";
 
 const navItems = [
-  { label: "Home", to: "/" },
-  { label: "Tracks", to: "/tracks" },
-  { label: "Simulate", to: "/simulate" },
-  { label: "Learn", to: "/learn" },
-  { label: "Profile", to: "/profile" },
+  { label: "Home", to: "/", icon: "⊞" },
+  { label: "Tracks", to: "/tracks", icon: "◎" },
+  { label: "Simulate", to: "/simulate", icon: "⟳" },
+  { label: "Learn", to: "/learn", icon: "◈" },
+  { label: "Profile", to: "/profile", icon: "◉" },
 ];
 
 export default function SideBar() {
@@ -19,6 +19,7 @@ export default function SideBar() {
         <div className="sidebar__brand-mark">NW</div>
         <span className="sidebar__brand-name">NextGen Wealth</span>
       </div>
+
       <nav className="sidebar__nav">
         {navItems.map((item) => (
           <NavLink
@@ -29,14 +30,16 @@ export default function SideBar() {
               isActive ? "sidebar__link sidebar__link--active" : "sidebar__link"
             }
           >
+            <span className="sidebar__link-icon">{item.icon}</span>
             {item.label}
           </NavLink>
         ))}
       </nav>
+
       <div className="sidebar__footer">
         <div className="sidebar__user">
-          <div className="sidebar__user-avatar">{user.initials}</div>
-          <span className="sidebar__user-name">{user.name}</span>
+          <div className="sidebar__user-avatar">{user?.initials || "U"}</div>
+          <span className="sidebar__user-name">{user?.name || "User"}</span>
         </div>
         <button
           className="sidebar__logout"
@@ -45,6 +48,7 @@ export default function SideBar() {
             window.location.href = "/login";
           }}
         >
+          <span className="sidebar__link-icon">→</span>
           Log out
         </button>
       </div>

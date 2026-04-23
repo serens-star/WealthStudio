@@ -134,47 +134,60 @@ code {
   --text-lg: 18px;
   --text-xl: 22px;
   --text-2xl: 28px;
+  --text-3xl: 36px;
 
   --weight-regular: 400;
   --weight-medium: 500;
+  --weight-bold: 600;
 
-  --color-bg: #fafaf8;
-  --color-surface: #f3f0ed;
+  --color-bg: #f4f5fb;
+  --color-surface: #edeef7;
   --color-surface-raised: #ffffff;
-  --color-border: #e0dada;
-  --color-border-strong: #c8c4c4;
+  --color-border: #e4e5f0;
+  --color-border-strong: #c8cae0;
 
-  --color-text-primary: #0f0f0f;
-  --color-text-secondary: #2c2c2c;
-  --color-text-muted: #6b6b68;
-  --color-text-placeholder: #a8a5a0;
+  --color-text-primary: #0d0d0d;
+  --color-text-secondary: #2c2c3a;
+  --color-text-muted: #7b7c96;
+  --color-text-placeholder: #b0b1c8;
 
-  --color-absa: #cc0000;
-  --color-absa-hover: #aa0000;
+  --color-absa: #a50000;
+  --color-absa-hover: #8a0000;
+  --color-absa-light: #fdf0f0;
+  --color-absa-border: #f5c0c0;
 
-  --color-success-bg: #eaf3de;
-  --color-success-border: #639922;
-  --color-success-text: #27500a;
+  --color-accent: #8586fe;
+  --color-accent-hover: #6d6ef0;
+  --color-accent-light: #f0f0ff;
+  --color-accent-border: #c8c9fd;
 
-  --color-warning-bg: #faeeda;
-  --color-warning-border: #ba7517;
-  --color-warning-text: #633806;
+  --color-success-bg: #edfaf3;
+  --color-success-border: #6dbb92;
+  --color-success-text: #1a6640;
 
-  --color-danger-bg: #fcebeb;
-  --color-danger-border: #e24b4a;
-  --color-danger-text: #501313;
+  --color-warning-bg: #fffbec;
+  --color-warning-border: #e6c84a;
+  --color-warning-text: #7a5c00;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  --color-danger-bg: #fff0f0;
+  --color-danger-border: #f5a0a0;
+  --color-danger-text: #8a0000;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
   --radius-full: 9999px;
 
-  --shadow-none: none;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
 
-  --sidebar-width: 220px;
-  --nav-height: 60px;
+  --sidebar-width: 230px;
+  --nav-height: 64px;
 
   --transition: 0.15s ease;
+  --transition-slow: 0.25s ease;
 }
 
 html,
