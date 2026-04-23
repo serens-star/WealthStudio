@@ -48,7 +48,8 @@ export default function Register() {
         })
       );
       localStorage.setItem("currentUser", formData.email);
-      navigate("/");
+      onLogin();
+      navigate("/")
     }, 600);
   };
 

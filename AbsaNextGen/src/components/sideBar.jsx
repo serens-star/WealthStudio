@@ -10,7 +10,7 @@ const navItems = [
   { label: "Profile", to: "/profile", icon: "◉" },
 ];
 
-export default function SideBar() {
+export default function SideBar({ onLogout }) {
   const { user } = useUser();
 
   return (
@@ -41,13 +41,7 @@ export default function SideBar() {
           <div className="sidebar__user-avatar">{user?.initials || "U"}</div>
           <span className="sidebar__user-name">{user?.name || "User"}</span>
         </div>
-        <button
-          className="sidebar__logout"
-          onClick={() => {
-            localStorage.removeItem("currentUser");
-            window.location.href = "/login";
-          }}
-        >
+        <button className="sidebar__logout" onClick={onLogout}>
           <span className="sidebar__link-icon">→</span>
           Log out
         </button>

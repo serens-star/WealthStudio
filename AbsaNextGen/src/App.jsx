@@ -1,5 +1,6 @@
-// import { useState } from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
 import SideBar from "./components/SideBar";
 import MobileNav from "./components/MobileNav";
 import Login from "./pages/Login/Login";
@@ -12,11 +13,11 @@ import Profile from "./pages/Profile/Profile";
 import Landing from "./pages/Landing/Landing";
 import "./App.css";
 
-function ProtectedLayout() {
+function ProtectedLayout({ onLogout }) {
   return (
     <div className="app-layout">
       <aside className="app-sidebar">
-        <SideBar />
+        <SideBar onLogout={onLogout} />
       </aside>
       <main className="app-main">
         <Routes>
@@ -35,17 +36,27 @@ function ProtectedLayout() {
 }
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    () => !!localStorage.getItem("currentUser")
+  );
+
+  const handleLogin = () => setIsLoggedIn(true);
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser");
+    setIsLoggedIn(false);
+  };
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/register" element={<Register onLogin={handleLogin} />} />
         <Route path="/landing" element={<Landing />} />
         <Route
           path="/*"
           element={
-            localStorage.getItem("currentUser") ? (
-              <ProtectedLayout />
+            isLoggedIn ? (
+              <ProtectedLayout onLogout={handleLogout} />
             ) : (
               <Landing />
             )

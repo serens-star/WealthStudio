@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { currentUser } from "../../data/userData";
+// import { currentUser } from "../../data/userData";
 import "./Login.css";
 
-export default function Login() {
-  const navigate = useNavigate();
+export default function Login({ onLogin }) {
+    const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,6 +37,7 @@ export default function Login() {
       }
 
       localStorage.setItem("currentUser", formData.email);
+      if (onLogin) onLogin(); // ← guard so it never throws if prop is missing
       navigate("/");
     }, 600);
   };
