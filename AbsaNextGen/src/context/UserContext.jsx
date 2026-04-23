@@ -6,7 +6,31 @@ const UserContext = createContext(null);
 export function UserProvider({ children }) {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem("userData");
-    return saved ? JSON.parse(saved) : currentUser;
+    if (saved) return JSON.parse(saved);
+
+    const currentEmail = localStorage.getItem("currentUser");
+    if (currentEmail) {
+      const accountData = localStorage.getItem(currentEmail);
+      if (accountData) {
+        const parsed = JSON.parse(accountData);
+        const initials = parsed.name
+          ? parsed.name
+              .split(" ")
+              .map((w) => w[0])
+              .join("")
+              .toUpperCase()
+              .slice(0, 2)
+          : currentUser.initials;
+        return {
+          ...currentUser,
+          name: parsed.name || currentUser.name,
+          email: currentEmail,
+          initials,
+        };
+      }
+    }
+
+    return currentUser;
   });
 
   useEffect(() => {

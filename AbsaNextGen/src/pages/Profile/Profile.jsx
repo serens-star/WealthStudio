@@ -205,7 +205,14 @@ export default function Profile() {
                 onSave={(val) => updateUser({ name: val })}
                 displayClassName="profile__name"
               />
-              <p className="profile__email">{user.email}</p>
+              <InlineEdit
+                value={user.email}
+                onSave={(val) => {
+                  updateUser({ email: val });
+                  localStorage.setItem("currentUser", val);
+                }}
+                displayClassName="profile__email"
+              />
             </div>
           </div>
           <div className="profile__track-info">
