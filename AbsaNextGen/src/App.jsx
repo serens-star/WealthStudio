@@ -9,6 +9,7 @@ import StrategyTracks from "./pages/StrategyTracks/StrategyTracks";
 import KnowYourMoney from "./pages/KnowYourMoney/KnowYourMoney";
 import ExplaineryLayer from "./pages/ExplaineryLayer/ExplaineryLayer";
 import Profile from "./pages/Profile/Profile";
+import Landing from "./pages/Landing/Landing";
 import "./App.css";
 
 function ProtectedLayout() {
@@ -39,7 +40,17 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/*" element={<ProtectedLayout />} />
+        <Route path="/landing" element={<Landing />} />
+        <Route
+          path="/*"
+          element={
+            localStorage.getItem("currentUser") ? (
+              <ProtectedLayout />
+            ) : (
+              <Landing />
+            )
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

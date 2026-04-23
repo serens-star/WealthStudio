@@ -14,25 +14,52 @@ export const tracks = [
       {
         period: "Year 1",
         items: [
-          "Identify and categorise all debts — student loans, car finance, credit cards.",
-          "Build a small emergency fund covering 1 to 2 months of expenses.",
-          "Begin aggressive repayment of high-interest debt, starting with credit cards.",
+          {
+            id: "df-1-1",
+            text: "Identify and categorise all debts — student loans, car finance, credit cards.",
+          },
+          {
+            id: "df-1-2",
+            text: "Build a small emergency fund covering 1 to 2 months of expenses.",
+          },
+          {
+            id: "df-1-3",
+            text: "Begin aggressive repayment of high-interest debt, starting with credit cards.",
+          },
         ],
       },
       {
         period: "Year 2–3",
         items: [
-          "Clear short-term debts including credit cards and personal loans.",
-          "Reduce vehicle finance balance significantly.",
-          "Maintain an emergency fund at 3 months of expenses.",
+          {
+            id: "df-2-1",
+            text: "Clear short-term debts including credit cards and personal loans.",
+          },
+          {
+            id: "df-2-2",
+            text: "Reduce vehicle finance balance significantly.",
+          },
+          {
+            id: "df-2-3",
+            text: "Maintain an emergency fund at 3 months of expenses.",
+          },
         ],
       },
       {
         period: "Year 4–5",
         items: [
-          "Student loans or vehicle finance fully repaid.",
-          "Redirect freed-up cash flow into savings and investments.",
-          "Achieve debt-free status with a strong foundation for wealth-building.",
+          {
+            id: "df-3-1",
+            text: "Student loans or vehicle finance fully repaid.",
+          },
+          {
+            id: "df-3-2",
+            text: "Redirect freed-up cash flow into savings and investments.",
+          },
+          {
+            id: "df-3-3",
+            text: "Achieve debt-free status with a strong foundation for wealth-building.",
+          },
         ],
       },
     ],
@@ -53,25 +80,52 @@ export const tracks = [
       {
         period: "Year 1",
         items: [
-          "Establish a clear Money Snapshot — income, fixed costs, debts, goals.",
-          "Build an emergency fund covering 2 months of expenses.",
-          "Begin consistent contributions to retirement accounts — RA or provident fund.",
+          {
+            id: "bg-1-1",
+            text: "Establish a clear Money Snapshot — income, fixed costs, debts, goals.",
+          },
+          {
+            id: "bg-1-2",
+            text: "Build an emergency fund covering 2 months of expenses.",
+          },
+          {
+            id: "bg-1-3",
+            text: "Begin consistent contributions to retirement accounts — RA or provident fund.",
+          },
         ],
       },
       {
         period: "Year 2–3",
         items: [
-          "Reduce debt balances while maintaining investment contributions.",
-          "Save for medium-term goals such as a property deposit or travel fund.",
-          "Grow emergency fund to 3 to 4 months of expenses.",
+          {
+            id: "bg-2-1",
+            text: "Reduce debt balances while maintaining investment contributions.",
+          },
+          {
+            id: "bg-2-2",
+            text: "Save for medium-term goals such as a property deposit or travel fund.",
+          },
+          {
+            id: "bg-2-3",
+            text: "Grow emergency fund to 3 to 4 months of expenses.",
+          },
         ],
       },
       {
         period: "Year 4–5",
         items: [
-          "Debt reduced to manageable levels with savings and investments growing steadily.",
-          "Property deposit saved and ready for purchase.",
-          "Lifestyle creep tracked and contained — expenses grow slower than income.",
+          {
+            id: "bg-3-1",
+            text: "Debt reduced to manageable levels with savings and investments growing steadily.",
+          },
+          {
+            id: "bg-3-2",
+            text: "Property deposit saved and ready for purchase.",
+          },
+          {
+            id: "bg-3-3",
+            text: "Lifestyle creep tracked and contained — expenses grow slower than income.",
+          },
         ],
       },
     ],
@@ -92,25 +146,52 @@ export const tracks = [
       {
         period: "Year 1",
         items: [
-          "Build a minimal emergency fund covering 1 month of expenses.",
-          "Begin aggressive contributions to tax-free savings accounts and ETFs.",
-          "Maintain minimum debt repayments to avoid penalties.",
+          {
+            id: "ai-1-1",
+            text: "Build a minimal emergency fund covering 1 month of expenses.",
+          },
+          {
+            id: "ai-1-2",
+            text: "Begin aggressive contributions to tax-free savings accounts and ETFs.",
+          },
+          {
+            id: "ai-1-3",
+            text: "Maintain minimum debt repayments to avoid penalties.",
+          },
         ],
       },
       {
         period: "Year 2–3",
         items: [
-          "Increase investment contributions to 20 to 30% of take-home pay.",
-          "Explore offshore investment options for diversification.",
-          "Begin planning for a property purchase as an investment asset.",
+          {
+            id: "ai-2-1",
+            text: "Increase investment contributions to 20 to 30% of take-home pay.",
+          },
+          {
+            id: "ai-2-2",
+            text: "Explore offshore investment options for diversification.",
+          },
+          {
+            id: "ai-2-3",
+            text: "Begin planning for a property purchase as an investment asset.",
+          },
         ],
       },
       {
         period: "Year 4–5",
         items: [
-          "Significant investment portfolio established — R300K+ in tax-free savings or ETFs.",
-          "Debt reduced but not fully cleared — repayment continues steadily.",
-          "Strong trajectory toward long-term wealth with retirement savings compounding.",
+          {
+            id: "ai-3-1",
+            text: "Significant investment portfolio established — R300K+ in tax-free savings or ETFs.",
+          },
+          {
+            id: "ai-3-2",
+            text: "Debt reduced but not fully cleared — repayment continues steadily.",
+          },
+          {
+            id: "ai-3-3",
+            text: "Strong trajectory toward long-term wealth with retirement savings compounding.",
+          },
         ],
       },
     ],
