@@ -55,6 +55,15 @@ export function UserProvider({ children }) {
     }));
   };
 
+  const updateCategory = (id, amount) => {
+    setUser((prev) => ({
+      ...prev,
+      categories: prev.categories.map((c) =>
+        c.id === id ? { ...c, amount } : c
+      ),
+    }));
+  };
+
   const updateGoal = (id, updates) => {
     setUser((prev) => ({
       ...prev,
@@ -113,6 +122,7 @@ export function UserProvider({ children }) {
         updateUser,
         updateSpending,
         updateSaContext,
+        updateCategory,
         updateGoal,
         addGoal,
         removeGoal,
