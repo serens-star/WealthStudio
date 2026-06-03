@@ -578,8 +578,8 @@
 }
 
 .tooltip-trigger {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: var(--color-border);
   border: none;
@@ -590,31 +590,33 @@
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
-  font-weight: var(--weight-bold);
-  transition: background var(--transition);
+  font-weight: 700;
+  transition: background var(--transition), color var(--transition);
+  position: relative;
 }
 
 .tooltip-trigger:hover {
-  background: var(--color-accent);
-  color: #fff;
+  background: #1a1a2e;
+  color: #ffffff;
 }
 
 .tooltip-box {
   position: absolute;
-  bottom: calc(100% + 6px);
+  bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  background: var(--color-text-primary);
+  background: #8585e2;
   color: #ffffff;
   font-size: 11px;
-  line-height: 1.5;
-  padding: 8px 10px;
-  border-radius: var(--radius-sm);
-  width: 220px;
+  line-height: 1.6;
+  padding: 10px 12px;
+  border-radius: 6px;
+  width: 230px;
   z-index: 9999;
   pointer-events: none;
-  font-weight: var(--weight-regular);
-  box-shadow: var(--shadow-md);
+  font-weight: 400;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 768px) {
