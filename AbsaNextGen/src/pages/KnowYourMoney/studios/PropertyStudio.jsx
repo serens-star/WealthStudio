@@ -6,6 +6,11 @@ function formatR(value) {
   return `R ${Math.round(value).toLocaleString("en-ZA")}`;
 }
 
+function safeNum(value, fallback = 0) {
+  const n = Number(value);
+  return isNaN(n) || !isFinite(n) ? fallback : n;
+}
+
 export default function PropertyStudio() {
   const [inputs, setInputs] = useState({
     salary: 45000,
@@ -20,32 +25,35 @@ export default function PropertyStudio() {
     setInputs((prev) => ({ ...prev, [key]: Number(value) }));
   };
 
-  const depositAmount = inputs.propertyPrice * (inputs.deposit / 100);
-  const loanAmount = inputs.propertyPrice - depositAmount;
-  const monthlyRate = inputs.interestRate / 100 / 12;
-  const months = inputs.years * 12;
+  const depositAmount = safeNum(inputs.propertyPrice * (inputs.deposit / 100));
+  const loanAmount = safeNum(inputs.propertyPrice - depositAmount);
+  const monthlyRate = safeNum(inputs.interestRate / 100 / 12);
+  const months = safeNum(inputs.years * 12, 60);
   const monthlyBond =
-    (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
-    (Math.pow(1 + monthlyRate, months) - 1);
+    monthlyRate > 0
+      ? safeNum(
+          (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+            (Math.pow(1 + monthlyRate, months) - 1)
+        )
+      : safeNum(loanAmount / months);
 
   const levy = 2200;
   const insurance = 800;
-  const totalMonthlyBuy = monthlyBond + levy + insurance;
+  const totalMonthlyBuy = safeNum(monthlyBond + levy + insurance);
   const transferDuty =
     inputs.propertyPrice > 1100000
-      ? (inputs.propertyPrice - 1100000) * 0.06
+      ? safeNum((inputs.propertyPrice - 1100000) * 0.06)
       : 0;
-  const totalBuyCost = totalMonthlyBuy * months + depositAmount + transferDuty;
-
-  const totalRentCost = inputs.rentalCost * months;
-  const monthlyInvest = totalMonthlyBuy - inputs.rentalCost;
+  const totalBuyCost = safeNum(totalMonthlyBuy * months + depositAmount + transferDuty);
+  const totalRentCost = safeNum(inputs.rentalCost * months);
+  const monthlyInvest = safeNum(totalMonthlyBuy - inputs.rentalCost);
   const investmentGrowth =
     monthlyInvest > 0
-      ? monthlyInvest * ((Math.pow(1 + 0.09 / 12, months) - 1) / (0.09 / 12))
+      ? safeNum(monthlyInvest * ((Math.pow(1 + 0.09 / 12, months) - 1) / (0.09 / 12)))
       : 0;
 
   const equityBuilt =
-    inputs.propertyPrice * Math.pow(1.05, inputs.years) - loanAmount;
+    safeNum(inputs.propertyPrice * Math.pow(1.05, inputs.years) - loanAmount);
 
   const buyingWins = equityBuilt > investmentGrowth;
 

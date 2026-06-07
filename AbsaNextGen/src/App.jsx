@@ -11,6 +11,7 @@ import KnowYourMoney from "./pages/KnowYourMoney/KnowYourMoney";
 import ExplaineryLayer from "./pages/ExplaineryLayer/ExplaineryLayer";
 import Profile from "./pages/Profile/Profile";
 import Landing from "./pages/Landing/Landing";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import "./App.css";
 
 function ProtectedLayout({ onLogout }) {
@@ -20,13 +21,15 @@ function ProtectedLayout({ onLogout }) {
         <SideBar onLogout={onLogout} />
       </aside>
       <main className="app-main">
-        <Routes>
-          <Route path="/" element={<MoneySnapshot />} />
-          <Route path="/tracks" element={<StrategyTracks />} />
-          <Route path="/simulate" element={<KnowYourMoney />} />
-          <Route path="/learn" element={<ExplaineryLayer />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="/" element={<MoneySnapshot />} />
+            <Route path="/tracks" element={<StrategyTracks />} />
+            <Route path="/simulate" element={<KnowYourMoney />} />
+            <Route path="/learn" element={<ExplaineryLayer />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </ErrorBoundary>
       </main>
       <nav className="app-mobile-nav">
         <MobileNav />

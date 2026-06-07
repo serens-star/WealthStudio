@@ -6,6 +6,11 @@ function formatR(value) {
   return `R ${Math.round(value).toLocaleString("en-ZA")}`;
 }
 
+function safeNum(value, fallback = 0) {
+  const n = Number(value);
+  return isNaN(n) || !isFinite(n) ? fallback : n;
+}
+
 export default function CarStudio() {
   const [inputs, setInputs] = useState({
     carPrice: 600000,
