@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Studio.css";
+import StudioExplainer from "./StudioExplainer";
 
 function formatR(value) {
   return `R ${Math.round(value).toLocaleString("en-ZA")}`;
@@ -51,6 +52,39 @@ export default function OffshoreStudio() {
     offshOnlyLocal * Math.pow(1 + randDepreciation, inputs.years);
 
   const splitWins = totalA > localOnlyValue;
+
+  const explainerSections = [
+    {
+      heading: "What this studio calculates",
+      body: "This studio projects the growth of your investment portfolio under different local and offshore allocation splits. It compares a chosen split against a fully local allocation, accounting for the different return rates of the JSE All Share Index and the MSCI World Index, plus the effect of rand depreciation on offshore returns when converted back to ZAR.",
+    },
+    {
+      heading: "Key assumptions",
+      items: [
+        "JSE All Share Index: 8% per year — the long-run historical average in nominal ZAR terms.",
+        "MSCI World Index: 10% per year — the long-run historical average in USD terms.",
+        "Rand depreciation: 5% per year — the long-run average depreciation of ZAR against USD.",
+        "Offshore returns are converted back to ZAR using the depreciation assumption, which inflates returns for ZAR investors.",
+        "No tax implications are modelled — in reality, offshore gains may be subject to capital gains tax.",
+      ],
+    },
+    {
+      heading: "Why rand depreciation helps offshore investors",
+      body: "When the rand weakens against the dollar, your offshore investment is worth more in rand terms even if its USD value has not changed. South African investors have historically benefited from this effect — a 10% USD return plus 5% rand depreciation produces approximately 15% in ZAR terms. This is a genuine structural advantage of offshore diversification for SA investors.",
+    },
+    {
+      heading: "The TFSA opportunity",
+      body: "South African investors can invest up to R36 000 per year into a Tax-Free Savings Account, with a lifetime limit of R500 000. Growth, dividends, and withdrawals are completely tax-free. This is the most tax-efficient investment vehicle available to South Africans and should be maximised before moving to taxable offshore accounts.",
+    },
+    {
+      heading: "What this studio does not account for",
+      body: "This is a simplified projection. It does not include platform fees (typically 0.5–1% per year), fund-level TERs, withholding taxes on foreign dividends, or the practical costs of currency conversion. In practice, these reduce returns by approximately 1–2% per year. The projections should be treated as directional rather than precise.",
+    },
+    {
+      heading: "Regulation 28 and retirement funds",
+      body: "South African retirement funds — including RAs and pension funds — are governed by Regulation 28, which limits offshore exposure to 45% of the fund. This means your RA cannot go fully offshore even if you wanted it to. General investment accounts and TFSAs have no such restriction.",
+    },
+  ];
 
   return (
     <div className="studio">
@@ -203,6 +237,10 @@ export default function OffshoreStudio() {
           </div>
         </div>
       </div>
+      <StudioExplainer
+        title="Local vs. Offshore"
+        sections={explainerSections}
+      />
     </div>
   );
 }

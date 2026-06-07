@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { tracks } from "../../data/tracksData";
+import { useUser } from "../../context/UserContext";
 import "./StrategyTracks.css";
 
 // function TrackCard({ track, isSelected, onSelect }) {
@@ -178,9 +179,189 @@ function NudgeCard({ nudge }) {
   );
 }
 
+function YearTimeline({ progress, track }) {
+  const allItems = track.milestones.flatMap((m) => m.items);
+  const totalItems = allItems.length;
+  const doneItems = allItems.filter(
+    (i) => progress[i.id] === STATUS.DONE
+  ).length;
+
+  const years = [
+    { label: "Year 1", milestoneIndex: 0 },
+    { label: "Year 2-3", milestoneIndex: 1 },
+    { label: "Year 4-5", milestoneIndex: 2 },
+  ];
+
+  const getMilestoneStatus = (index) => {
+    const milestone = track.milestones[index];
+    if (!milestone) return "locked";
+    const items = milestone.items;
+    const done = items.filter((i) => progress[i.id] === STATUS.DONE).length;
+    const inProg = items.filter(
+      (i) => progress[i.id] === STATUS.IN_PROGRESS
+    ).length;
+    if (done === items.length) return "done";
+    if (done > 0 || inProg > 0) return "active";
+    return "locked";
+  };
+
+  const overallPercent = Math.round((doneItems / totalItems) * 100);
+
+  return (
+    <div className="year-timeline">
+      <div className="year-timeline__header">
+        <span className="year-timeline__label">Five-year journey</span>
+        <span className="year-timeline__percent">
+          {overallPercent}% complete
+        </span>
+      </div>
+      <div className="year-timeline__track">
+        <div
+          className="year-timeline__fill"
+          style={{ width: `${overallPercent}%` }}
+        />
+      </div>
+      <div className="year-timeline__markers">
+        {years.map((year, i) => {
+          const status = getMilestoneStatus(year.milestoneIndex);
+          return (
+            <div key={year.label} className="year-timeline__marker">
+              <div
+                className={`year-timeline__dot year-timeline__dot--${status}`}
+              >
+                {status === "done" && "✓"}
+                {status === "active" && "◑"}
+                {status === "locked" && i + 1}
+              </div>
+              <span className="year-timeline__marker-label">{year.label}</span>
+            </div>
+          );
+        })}
+        <div className="year-timeline__marker">
+          <div
+            className={`year-timeline__dot year-timeline__dot--${
+              overallPercent === 100 ? "done" : "locked"
+            }`}
+          >
+            {overallPercent === 100 ? "✓" : "🎯"}
+          </div>
+          <span className="year-timeline__marker-label">Goal reached</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RecommendationBanner({ user, selectedId, onSelect }) {
+  const categories = user.categories || [];
+  const takeHome = user.takeHome || 33200;
+  const debtCategory = categories.find((c) => c.id === "debt");
+  const savingsCategory = categories.find((c) => c.id === "savings");
+
+  const monthlyDebt = debtCategory?.amount || 0;
+  const monthlySavings = savingsCategory?.amount || 0;
+  const dti = Math.round((monthlyDebt / takeHome) * 100);
+  const savingsRate = Math.round((monthlySavings / takeHome) * 100);
+  const totalDebt = Object.values(user.debts || {}).reduce((s, v) => s + v, 0);
+
+  let recommendedId = "balanced-growth";
+  let reason = "";
+  let urgent = false;
+
+  if (totalDebt > 100000 || dti > 15) {
+    recommendedId = "debt-first";
+    reason = `Your total debt is R ${totalDebt.toLocaleString(
+      "en-ZA"
+    )} and your debt repayments are ${dti}% of take-home. Clearing high-interest debt first will free up significant cash flow within 2–3 years.`;
+    urgent = dti > 20;
+  } else if (savingsRate < 8) {
+    recommendedId = "balanced-growth";
+    reason = `Your savings rate is ${savingsRate}% — below the 15% target. The Balanced Growth track helps you build savings and investments steadily without overcommitting.`;
+  } else if (savingsRate >= 15 && totalDebt < 50000) {
+    recommendedId = "aggressive-invest";
+    reason = `Your savings rate is ${savingsRate}% and your debt load is manageable at R ${totalDebt.toLocaleString(
+      "en-ZA"
+    )}. You're in a strong position to maximise early investment contributions.`;
+  } else {
+    reason = `Based on your savings rate of ${savingsRate}% and current debt position, Balanced Growth gives you the most sustainable path through your first five years.`;
+  }
+
+  const alreadyOnRecommended = selectedId === recommendedId;
+
+  if (alreadyOnRecommended) return null;
+
+  const recommendedTrack = tracks.find((t) => t.id === recommendedId);
+
+  return (
+    <div className={`rec-banner ${urgent ? "rec-banner--urgent" : ""}`}>
+      <div className="rec-banner__icon">{urgent ? "⚠" : "💡"}</div>
+      <div className="rec-banner__content">
+        <p className="rec-banner__title">
+          Based on your numbers, we recommend{" "}
+          <strong>{recommendedTrack?.name}</strong>
+        </p>
+        <p className="rec-banner__reason">{reason}</p>
+      </div>
+      <button
+        className="rec-banner__cta"
+        onClick={() => onSelect(recommendedId)}
+      >
+        Switch track
+      </button>
+    </div>
+  );
+}
+
+function TrackRationale({ track }) {
+  const rationale = {
+    "debt-first": {
+      why: "High-interest debt is the single biggest drag on wealth-building for young South African professionals. Credit card interest at 20%+ and vehicle finance at 13% cost more than most investments earn. This track treats debt elimination as the highest-return investment you can make right now.",
+      bestFor:
+        "Professionals with credit card balances, student loans, or vehicle finance exceeding 15% of take-home pay.",
+      watch:
+        "Resist the temptation to invest aggressively before debt is cleared. The maths rarely favours it.",
+    },
+    "balanced-growth": {
+      why: "Most young professionals benefit most from a steady, diversified approach — paying down debt while simultaneously building an emergency fund and beginning retirement contributions. This prevents the all-or-nothing thinking that leaves people either over-indebted or under-invested.",
+      bestFor:
+        "Professionals with manageable debt, a stable income, and a desire to build multiple financial pillars simultaneously.",
+      watch:
+        "Lifestyle creep is the main risk here. As income grows, ensure your savings rate grows with it.",
+    },
+    "aggressive-invest": {
+      why: "Compound interest rewards those who start early. A R2 000/month ETF investment started at 25 grows to approximately R1.4 million by 55 at 9% annual returns. Waiting until 35 to start produces roughly R580 000 — less than half. For those with low debt and stable income, early aggressive investing is mathematically compelling.",
+      bestFor:
+        "Professionals with minimal debt, a solid emergency fund, and high risk tolerance who want to maximise long-term wealth.",
+      watch:
+        "This track requires a genuine emergency fund buffer. Without one, a single unexpected expense forces you to sell investments at the wrong time.",
+    },
+  };
+
+  const content = rationale[track.id];
+  if (!content) return null;
+
+  return (
+    <div className="track-rationale">
+      <p className="track-rationale__heading">Why this track exists</p>
+      <p className="track-rationale__why">{content.why}</p>
+      <div className="track-rationale__grid">
+        <div className="track-rationale__item">
+          <p className="track-rationale__item-label">Best for</p>
+          <p className="track-rationale__item-value">{content.bestFor}</p>
+        </div>
+        <div className="track-rationale__item track-rationale__item--warn">
+          <p className="track-rationale__item-label">Watch out for</p>
+          <p className="track-rationale__item-value">{content.watch}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function StrategyTracks() {
   const savedTrack = localStorage.getItem("selectedTrack") || "balanced-growth";
   const [selectedId, setSelectedId] = useState(savedTrack);
+  const { user } = useUser();
 
   const [progress, setProgress] = useState(() => {
     const saved = localStorage.getItem("milestoneProgress");
@@ -252,6 +433,12 @@ export default function StrategyTracks() {
 
       {selectedTrack && (
         <section className="tracks__section tracks__detail">
+          <RecommendationBanner
+            user={user}
+            selectedId={selectedId}
+            onSelect={handleSelect}
+          />
+
           <div className="tracks__detail-header">
             <div>
               <p className="tracks__section-label">Your five-year plan</p>
@@ -262,7 +449,11 @@ export default function StrategyTracks() {
             </button>
           </div>
 
+          <YearTimeline progress={progress} track={selectedTrack} />
+
           <TrackProgress track={selectedTrack} progress={progress} />
+
+          <TrackRationale track={selectedTrack} />
 
           <div className="tracks__detail-body">
             <div className="tracks__milestones">

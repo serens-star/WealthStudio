@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Studio.css";
+import StudioExplainer from "./StudioExplainer";
 
 function formatR(value) {
   return `R ${Math.round(value).toLocaleString("en-ZA")}`;
@@ -47,6 +48,35 @@ export default function PropertyStudio() {
     inputs.propertyPrice * Math.pow(1.05, inputs.years) - loanAmount;
 
   const buyingWins = equityBuilt > investmentGrowth;
+
+  const explainerSections = [
+    {
+      heading: "What this studio calculates",
+      body: "This studio compares the true five-year cost of buying a property versus renting and investing the difference. It accounts for bond repayments, transfer duty, levies, insurance, and equity built — against rental payments and the growth of invested savings.",
+    },
+    {
+      heading: "Key assumptions",
+      items: [
+        "Bond repayments are calculated using the standard amortisation formula at your chosen interest rate.",
+        "Property appreciation is modelled at 5% per year — the long-run average for South African residential property.",
+        "The investment return on renting scenarios uses 9% per year — a conservative JSE ETF estimate.",
+        "Levies are estimated at R2 200/month, typical for a Joburg sectional title property.",
+        "Home insurance is estimated at R800/month.",
+      ],
+    },
+    {
+      heading: "Transfer duty in South Africa",
+      body: "Transfer duty is a tax paid to SARS when purchasing property. Properties below R1.1 million are exempt. Between R1.1M and R1.512M, the rate is 3% on the amount above R1.1M. This cost is paid once at registration and is not recoverable — it is a real upfront cost of buying.",
+    },
+    {
+      heading: "Why the verdict can favour renting",
+      body: "Many South Africans assume buying always wins. But over short horizons — typically under 7 years — the upfront costs of buying (deposit, transfer duty, bond registration) combined with slower equity accumulation in the early years often means renting and investing the difference produces more liquid wealth. The property advantage compounds over longer periods.",
+    },
+    {
+      heading: "What this studio does not account for",
+      body: "This is a simplified model. It does not include bond registration fees (approximately 1–2% of bond value), conveyancing fees, or the psychological value of ownership. It also assumes rental prices remain constant, which understates the renting cost over time.",
+    },
+  ];
 
   return (
     <div className="studio">
@@ -243,6 +273,10 @@ export default function PropertyStudio() {
           </div>
         </div>
       </div>
+      <StudioExplainer
+        title="Property vs. Renting"
+        sections={explainerSections}
+      />
     </div>
   );
 }

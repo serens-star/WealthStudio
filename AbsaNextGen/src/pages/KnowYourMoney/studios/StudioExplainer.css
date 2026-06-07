@@ -1,0 +1,84 @@
+.studio-explainer {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+.studio-explainer__toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: var(--color-surface);
+  border: none;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition);
+  font-family: var(--font-sans);
+}
+
+.studio-explainer__toggle:hover {
+  background: var(--color-surface-raised);
+  color: var(--color-text-primary);
+}
+
+.studio-explainer__toggle-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-accent-light);
+  border: 1px solid var(--color-accent-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--color-accent);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.studio-explainer__body {
+  padding: 20px;
+  background: var(--color-surface-raised);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.studio-explainer__section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.studio-explainer__section-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+}
+
+.studio-explainer__section-body {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.75;
+}
+
+.studio-explainer__list {
+  margin: 4px 0 0 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.studio-explainer__list li {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}

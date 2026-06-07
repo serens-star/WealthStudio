@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Studio.css";
+import StudioExplainer from "./StudioExplainer";
 
 function formatR(value) {
   return `R ${Math.round(value).toLocaleString("en-ZA")}`;
@@ -38,6 +39,35 @@ export default function CarStudio() {
     monthlyInvest * ((Math.pow(1 + 0.09 / 12, months) - 1) / (0.09 / 12));
 
   const investWins = investmentValue > carValueRemaining;
+
+  const explainerSections = [
+    {
+      heading: "What this studio calculates",
+      body: "This studio compares the five-year cost of financing a luxury vehicle against investing the equivalent monthly amount into a JSE ETF. The car scenario includes monthly instalments, insurance, and maintenance. The investment scenario compounds monthly contributions at a conservative market return.",
+    },
+    {
+      heading: "Key assumptions",
+      items: [
+        "Vehicle finance instalments are calculated using the standard amortisation formula.",
+        "Car depreciation is modelled at 15% per year — the South African average for new vehicles.",
+        "Investment returns use 9% per year, reflecting a diversified JSE ETF portfolio.",
+        "Insurance is set at R2 500/month for a luxury vehicle — typical for comprehensive cover in Gauteng.",
+        "The investment figure reflects growth on monthly contributions over time, not a lump sum invested on day one.",
+      ],
+    },
+    {
+      heading: "Vehicle finance in South Africa",
+      body: "South African vehicle finance is typically offered at prime plus 1–3%. The current prime rate is approximately 11.25%, putting most vehicle finance between 12.25% and 14.25%. Interest is front-loaded — in the early months of a finance agreement, most of your instalment pays interest rather than reducing the capital balance.",
+    },
+    {
+      heading: "The depreciation reality",
+      body: "A new R600 000 vehicle loses approximately R90 000 in value in its first year alone. By year five, the car is typically worth 40–50% of its purchase price. This depreciation is a real financial cost that does not appear on a monthly bank statement, which is why people routinely underestimate the true cost of vehicle ownership.",
+    },
+    {
+      heading: "Why this matters for young professionals",
+      body: "Vehicle finance is the single most common financial mistake made by young high-earning South Africans. The combination of a large loan at a high interest rate, rapid depreciation, and high insurance costs creates a monthly cash drain that compounds negatively over time — directly competing with investment contributions that would compound positively.",
+    },
+  ];
 
   return (
     <div className="studio">
@@ -231,6 +261,10 @@ export default function CarStudio() {
           </div>
         </div>
       </div>
+      <StudioExplainer
+        title="Luxury Car vs. Invest"
+        sections={explainerSections}
+      />
     </div>
   );
 }
