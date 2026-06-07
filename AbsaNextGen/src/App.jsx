@@ -12,6 +12,7 @@ import ExplaineryLayer from "./pages/ExplaineryLayer/ExplaineryLayer";
 import Profile from "./pages/Profile/Profile";
 import Landing from "./pages/Landing/Landing";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import Onboarding from "./pages/Onboarding/Onboarding";
 import "./App.css";
 
 function ProtectedLayout({ onLogout }) {
@@ -55,6 +56,10 @@ export default function App() {
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register onLogin={handleLogin} />} />
         <Route path="/landing" element={<Landing />} />
+        <Route
+          path="/onboarding"
+          element={isLoggedIn ? <Onboarding /> : <Landing />}
+        />
         <Route
           path="/*"
           element={

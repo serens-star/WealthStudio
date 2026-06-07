@@ -639,3 +639,138 @@
     width: 100%;
   }
 }
+
+.forecast {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.forecast__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.forecast__sub {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.forecast__horizon {
+  display: flex;
+  gap: 4px;
+}
+
+.forecast__horizon-btn {
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: all var(--transition);
+}
+
+.forecast__horizon-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.forecast__horizon-btn--active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #ffffff;
+}
+
+.forecast__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.forecast__card {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.forecast__card--highlight {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent-border);
+}
+
+.forecast__card-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.forecast__card-value {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.forecast__card-value--accent {
+  color: var(--color-accent);
+}
+
+.forecast__card-sub {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.forecast__bar-track {
+  height: 4px;
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+  margin: 6px 0 4px;
+}
+
+.forecast__bar-fill {
+  height: 4px;
+  border-radius: var(--radius-full);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.forecast__bar-fill--savings {
+  background: var(--color-success-text);
+}
+
+.forecast__bar-fill--debt {
+  background: var(--color-absa);
+}
+
+.forecast__card-note {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.forecast__card-note--accent {
+  color: var(--color-accent);
+  font-weight: var(--weight-medium);
+}
+
+@media (max-width: 768px) {
+  .forecast__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

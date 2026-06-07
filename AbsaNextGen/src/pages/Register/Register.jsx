@@ -13,16 +13,6 @@ export default function Register({ onLogin }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  if (!formData.email.includes("@") || !formData.email.includes(".")) {
-    setError("Please enter a valid email address.");
-    return;
-  }
-
-  if (formData.name.trim().length < 2) {
-    setError("Please enter your full name.");
-    return;
-  }
-
   const handleChange = (e) => {
     setError("");
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,6 +21,16 @@ export default function Register({ onLogin }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
+
+    if (!formData.email.includes("@") || !formData.email.includes(".")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (formData.name.trim().length < 2) {
+      setError("Please enter your full name.");
+      return;
+    }
 
     if (formData.password !== formData.confirm) {
       setError("Passwords do not match.");
@@ -59,7 +59,7 @@ export default function Register({ onLogin }) {
       );
       localStorage.setItem("currentUser", formData.email);
       onLogin();
-      navigate("/");
+      navigate("/onboarding");
     }, 600);
   };
 

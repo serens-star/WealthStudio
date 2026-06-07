@@ -191,6 +191,146 @@ function generateNarrative(takeHome, categories, dti, savingsRate) {
   return lines;
 }
 
+function SpendingForecast({ user }) {
+  const [horizon, setHorizon] = useState(6);
+  const { takeHome, spending, saContext, goals, categories } = user;
+
+  const savingsCategory = categories?.find((c) => c.id === "savings");
+  const debtCategory = categories?.find((c) => c.id === "debt");
+
+  const monthlySavings =
+    savingsCategory?.amount || spending?.savedInvested || 0;
+  const monthlyDebt = debtCategory?.amount || 0;
+  const raContribution = saContext?.raContribution || 0;
+  const totalDebt = Object.values(user.debts || {}).reduce((s, v) => s + v, 0);
+
+  const emergencyGoal = goals?.find((g) =>
+    g.name.toLowerCase().includes("emergency")
+  );
+  const currentEmergency = emergencyGoal?.current || 0;
+  const targetEmergency = emergencyGoal?.target || takeHome * 3;
+
+  const projectedSavings = currentEmergency + monthlySavings * horizon;
+  const projectedDebtReduction = monthlyDebt * horizon;
+  const projectedDebtRemaining = Math.max(
+    0,
+    totalDebt - projectedDebtReduction
+  );
+  const projectedRAValue = raContribution * horizon * (1 + 0.0075 * horizon);
+  const emergencyProgress = Math.min(
+    100,
+    Math.round((projectedSavings / targetEmergency) * 100)
+  );
+
+  const improvedSavings = monthlySavings * 1.05;
+  const improvedProjectedSavings = currentEmergency + improvedSavings * horizon;
+
+  return (
+    <section className="forecast">
+      <div className="forecast__header">
+        <div>
+          <p className="snapshot__section-label">Spending forecast</p>
+          <p className="forecast__sub">
+            Where will you be if you stay on your current trajectory?
+          </p>
+        </div>
+        <div className="forecast__horizon">
+          {[3, 6, 12].map((h) => (
+            <button
+              key={h}
+              className={`forecast__horizon-btn ${
+                horizon === h ? "forecast__horizon-btn--active" : ""
+              }`}
+              onClick={() => setHorizon(h)}
+            >
+              {h}mo
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="forecast__grid">
+        <div className="forecast__card">
+          <p className="forecast__card-label">Emergency fund</p>
+          <p className="forecast__card-value">
+            R {Math.round(projectedSavings).toLocaleString("en-ZA")}
+          </p>
+          <p className="forecast__card-sub">
+            in {horizon} months at current rate
+          </p>
+          <div className="forecast__bar-track">
+            <div
+              className="forecast__bar-fill forecast__bar-fill--savings"
+              style={{ width: `${emergencyProgress}%` }}
+            />
+          </div>
+          <p className="forecast__card-note">
+            {emergencyProgress >= 100
+              ? "✓ Target reached"
+              : `${emergencyProgress}% of ${horizon}-month target`}
+          </p>
+        </div>
+
+        <div className="forecast__card">
+          <p className="forecast__card-label">Debt remaining</p>
+          <p className="forecast__card-value">
+            R {Math.round(projectedDebtRemaining).toLocaleString("en-ZA")}
+          </p>
+          <p className="forecast__card-sub">
+            after {horizon} months of repayments
+          </p>
+          <div className="forecast__bar-track">
+            <div
+              className="forecast__bar-fill forecast__bar-fill--debt"
+              style={{
+                width: `${
+                  totalDebt > 0
+                    ? Math.round((projectedDebtReduction / totalDebt) * 100)
+                    : 0
+                }%`,
+              }}
+            />
+          </div>
+          <p className="forecast__card-note">
+            R {Math.round(projectedDebtReduction).toLocaleString("en-ZA")} paid
+            off
+          </p>
+        </div>
+
+        <div className="forecast__card">
+          <p className="forecast__card-label">RA portfolio estimate</p>
+          <p className="forecast__card-value">
+            R {Math.round(projectedRAValue).toLocaleString("en-ZA")}
+          </p>
+          <p className="forecast__card-sub">
+            at 9% growth over {horizon} months
+          </p>
+          <p className="forecast__card-note forecast__card-note--accent">
+            R {raContribution.toLocaleString("en-ZA")}/mo contributing
+          </p>
+        </div>
+
+        <div className="forecast__card forecast__card--highlight">
+          <p className="forecast__card-label">If you save 5% more</p>
+          <p className="forecast__card-value forecast__card-value--accent">
+            R {Math.round(improvedProjectedSavings).toLocaleString("en-ZA")}
+          </p>
+          <p className="forecast__card-sub">
+            emergency fund in {horizon} months
+          </p>
+          <p className="forecast__card-note forecast__card-note--accent">
+            +R{" "}
+            {Math.round(
+              improvedProjectedSavings - projectedSavings
+            ).toLocaleString("en-ZA")}{" "}
+            more than current trajectory
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function MoneySnapshot() {
   const { user, removeNudge } = useUser();
 
@@ -380,6 +520,8 @@ export default function MoneySnapshot() {
           </div>
         </div>
       </section>
+
+      <SpendingForecast user={user} />
 
       <div className="snapshot__two-col">
         <div className="snapshot__col">
