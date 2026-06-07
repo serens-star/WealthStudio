@@ -27,34 +27,42 @@ export default function OffshoreStudio() {
   };
 
   const offshSplit = 100 - inputs.localSplit;
-  const months = inputs.years * 12;
+  const months = safeNum(inputs.years * 12, 60);
 
-  const localMonthly = inputs.monthlyContribution * (inputs.localSplit / 100);
-  const offshMonthly = inputs.monthlyContribution * (offshSplit / 100);
+  const localMonthly = safeNum(
+    inputs.monthlyContribution * (inputs.localSplit / 100)
+  );
+  const offshMonthly = safeNum(inputs.monthlyContribution * (offshSplit / 100));
 
   const localRate = 0.08 / 12;
   const offshRate = 0.1 / 12;
   const randDepreciation = 0.05;
 
-  const localValue =
-    localMonthly * ((Math.pow(1 + localRate, months) - 1) / localRate);
+  const localValue = safeNum(
+    localMonthly * ((Math.pow(1 + localRate, months) - 1) / localRate)
+  );
 
-  const offshValueUSD =
-    offshMonthly * ((Math.pow(1 + offshRate, months) - 1) / offshRate);
-  const offshValueZAR =
-    offshValueUSD * Math.pow(1 + randDepreciation, inputs.years);
+  const offshValueUSD = safeNum(
+    offshMonthly * ((Math.pow(1 + offshRate, months) - 1) / offshRate)
+  );
+  const offshValueZAR = safeNum(
+    offshValueUSD * Math.pow(1 + randDepreciation, inputs.years)
+  );
 
-  const totalA = localValue + offshValueZAR;
+  const totalA = safeNum(localValue + offshValueZAR);
 
-  const localOnlyValue =
+  const localOnlyValue = safeNum(
     inputs.monthlyContribution *
-    ((Math.pow(1 + localRate, months) - 1) / localRate);
+      ((Math.pow(1 + localRate, months) - 1) / localRate)
+  );
 
-  const offshOnlyLocal =
+  const offshOnlyLocal = safeNum(
     inputs.monthlyContribution *
-    ((Math.pow(1 + offshRate, months) - 1) / offshRate);
-  const offshOnlyZAR =
-    offshOnlyLocal * Math.pow(1 + randDepreciation, inputs.years);
+      ((Math.pow(1 + offshRate, months) - 1) / offshRate)
+  );
+  const offshOnlyZAR = safeNum(
+    offshOnlyLocal * Math.pow(1 + randDepreciation, inputs.years)
+  );
 
   const splitWins = totalA > localOnlyValue;
 

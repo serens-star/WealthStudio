@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 
 export default function Login({ onLogin }) {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,28 +16,34 @@ export default function Login({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
+
+    if (!formData.email.includes("@") || !formData.email.includes(".")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (formData.password.length < 1) {
+      setError("Please enter your password.");
+      return;
+    }
+
+    setLoading(true);
 
     setTimeout(() => {
       const stored = localStorage.getItem(formData.email);
-
       if (!stored) {
-        setError("No account found with that email.");
+        setError("No account found with that email address.");
         setLoading(false);
         return;
       }
-
       const user = JSON.parse(stored);
-
       if (user.password !== formData.password) {
-        setError("Incorrect password.");
+        setError("Incorrect password. Please try again.");
         setLoading(false);
         return;
       }
-
       localStorage.setItem("currentUser", formData.email);
-      if (onLogin) onLogin(); // ← guard so it never throws if prop is missing
       navigate("/");
     }, 600);
   };

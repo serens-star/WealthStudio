@@ -25,23 +25,31 @@ export default function CarStudio() {
     setInputs((prev) => ({ ...prev, [key]: Number(value) }));
   };
 
-  const months = inputs.years * 12;
-  const loanAmount = inputs.carPrice * (1 - inputs.deposit / 100);
-  const monthlyRate = inputs.interestRate / 100 / 12;
+  const months = safeNum(inputs.years * 12, 60);
+  const loanAmount = safeNum(inputs.carPrice * (1 - inputs.deposit / 100));
+  const monthlyRate = safeNum(inputs.interestRate / 100 / 12);
   const monthlyInstalment =
-    (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
-    (Math.pow(1 + monthlyRate, months) - 1);
-
-  const totalMonthlyCar =
-    monthlyInstalment + inputs.insurance + inputs.maintenance;
-  const totalCarCost =
-    totalMonthlyCar * months + inputs.carPrice * (inputs.deposit / 100);
-  const carDepreciation = inputs.carPrice * (1 - Math.pow(0.85, inputs.years));
-  const carValueRemaining = inputs.carPrice - carDepreciation;
+    monthlyRate > 0
+      ? safeNum(
+          (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+            (Math.pow(1 + monthlyRate, months) - 1)
+        )
+      : safeNum(loanAmount / months);
+  const totalMonthlyCar = safeNum(
+    monthlyInstalment + inputs.insurance + inputs.maintenance
+  );
+  const totalCarCost = safeNum(
+    totalMonthlyCar * months + inputs.carPrice * (inputs.deposit / 100)
+  );
+  const carDepreciation = safeNum(
+    inputs.carPrice * (1 - Math.pow(0.85, inputs.years))
+  );
+  const carValueRemaining = safeNum(inputs.carPrice - carDepreciation);
 
   const monthlyInvest = totalMonthlyCar;
-  const investmentValue =
-    monthlyInvest * ((Math.pow(1 + 0.09 / 12, months) - 1) / (0.09 / 12));
+  const investmentValue = safeNum(
+    monthlyInvest * ((Math.pow(1 + 0.09 / 12, months) - 1) / (0.09 / 12))
+  );
 
   const investWins = investmentValue > carValueRemaining;
 

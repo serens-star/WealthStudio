@@ -5,36 +5,43 @@ const UserContext = createContext(null);
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem("userData");
-    if (saved) return JSON.parse(saved);
+    try {
+      const saved = localStorage.getItem("userData");
+      if (saved) return JSON.parse(saved);
 
-    const currentEmail = localStorage.getItem("currentUser");
-    if (currentEmail) {
-      const accountData = localStorage.getItem(currentEmail);
-      if (accountData) {
-        const parsed = JSON.parse(accountData);
-        const initials = parsed.name
-          ? parsed.name
-              .split(" ")
-              .map((w) => w[0])
-              .join("")
-              .toUpperCase()
-              .slice(0, 2)
-          : currentUser.initials;
-        return {
-          ...currentUser,
-          name: parsed.name || currentUser.name,
-          email: currentEmail,
-          initials,
-        };
+      const currentEmail = localStorage.getItem("currentUser");
+      if (currentEmail) {
+        const accountData = localStorage.getItem(currentEmail);
+        if (accountData) {
+          const parsed = JSON.parse(accountData);
+          const initials = parsed.name
+            ? parsed.name
+                .split(" ")
+                .map((w) => w[0])
+                .join("")
+                .toUpperCase()
+                .slice(0, 2)
+            : currentUser.initials;
+          return {
+            ...currentUser,
+            name: parsed.name || currentUser.name,
+            email: currentEmail,
+            initials,
+          };
+        }
       }
+    } catch (err) {
+      console.warn("Could not read from localStorage:", err);
     }
-
     return currentUser;
   });
 
   useEffect(() => {
-    localStorage.setItem("userData", JSON.stringify(user));
+    try {
+      localStorage.setItem("userData", JSON.stringify(user));
+    } catch (err) {
+      console.warn("Could not save to localStorage:", err);
+    }
   }, [user]);
 
   const updateUser = (updates) => {
