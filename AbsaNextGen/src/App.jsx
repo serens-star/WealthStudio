@@ -26,6 +26,7 @@ function ProtectedLayout({ onLogout }) {
           <Routes>
             <Route path="/" element={<MoneySnapshot />} />
             <Route path="/tracks" element={<StrategyTracks />} />
+            <Route path="/tracks/:trackId" element={<StrategyTracks />} />
             <Route path="/simulate" element={<KnowYourMoney />} />
             <Route path="/learn" element={<ExplaineryLayer />} />
             <Route path="/profile" element={<Profile />} />

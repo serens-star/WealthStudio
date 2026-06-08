@@ -40,20 +40,32 @@ export default function PropertyStudio() {
   const levy = 2200;
   const insurance = 800;
   const totalMonthlyBuy = safeNum(monthlyBond + levy + insurance);
-  const transferDuty =
-    inputs.propertyPrice > 1100000
-      ? safeNum((inputs.propertyPrice - 1100000) * 0.06)
-      : 0;
-  const totalBuyCost = safeNum(totalMonthlyBuy * months + depositAmount + transferDuty);
+  const transferDuty = safeNum(
+    (() => {
+      const p = inputs.propertyPrice;
+      if (p <= 1100000) return 0;
+      if (p <= 1512000) return (p - 1100000) * 0.03;
+      if (p <= 2117000) return 12360 + (p - 1512000) * 0.06;
+      if (p <= 2722000) return 48600 + (p - 2117000) * 0.08;
+      if (p <= 12100000) return 97040 + (p - 2722000) * 0.11;
+      return 1128600 + (p - 12100000) * 0.13;
+    })()
+  );
+  const totalBuyCost = safeNum(
+    totalMonthlyBuy * months + depositAmount + transferDuty
+  );
   const totalRentCost = safeNum(inputs.rentalCost * months);
   const monthlyInvest = safeNum(totalMonthlyBuy - inputs.rentalCost);
   const investmentGrowth =
     monthlyInvest > 0
-      ? safeNum(monthlyInvest * ((Math.pow(1 + 0.09 / 12, months) - 1) / (0.09 / 12)))
+      ? safeNum(
+          monthlyInvest * ((Math.pow(1 + 0.09 / 12, months) - 1) / (0.09 / 12))
+        )
       : 0;
 
-  const equityBuilt =
-    safeNum(inputs.propertyPrice * Math.pow(1.05, inputs.years) - loanAmount);
+  const equityBuilt = safeNum(
+    inputs.propertyPrice * Math.pow(1.05, inputs.years) - loanAmount
+  );
 
   const buyingWins = equityBuilt > investmentGrowth;
 

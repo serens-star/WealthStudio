@@ -1,32 +1,8 @@
 import { useState, useEffect } from "react";
 import { tracks } from "../../data/tracksData";
 import { useUser } from "../../context/UserContext";
+import { useParams, useNavigate } from "react-router-dom";
 import "./StrategyTracks.css";
-
-// function TrackCard({ track, isSelected, onSelect }) {
-//   return (
-//     <button
-//       className={`track-card ${isSelected ? "track-card--selected" : ""}`}
-//       onClick={() => onSelect(track.id)}
-//       aria-pressed={isSelected}
-//     >
-//       <div className="track-card__header">
-//         <h3 className="track-card__name">{track.name}</h3>
-//         {isSelected && <span className="track-card__badge">Active</span>}
-//       </div>
-//       <p className="track-card__tagline">{track.tagline}</p>
-//       <p className="track-card__desc">{track.description}</p>
-//       <div className="track-card__meta-row">
-//         <span className="track-card__meta-label">Avoids</span>
-//         <span className="track-card__meta-value">{track.avoids}</span>
-//       </div>
-//       <div className="track-card__meta-row">
-//         <span className="track-card__meta-label">Trade-off</span>
-//         <span className="track-card__meta-value">{track.tradeoff}</span>
-//       </div>
-//     </button>
-//   );
-// }
 
 const STATUS = {
   NOT_STARTED: "not-started",
@@ -170,11 +146,75 @@ function TrackCard({ track, isSelected, onSelect }) {
   );
 }
 
-function NudgeCard({ nudge }) {
+function DynamicNudge({ track, user }) {
+  const categories = user.categories || [];
+  const takeHome = user.takeHome || 33200;
+  const savingsCategory = categories.find((c) => c.id === "savings");
+  const debtCategory = categories.find((c) => c.id === "debt");
+  const lifestyleCategory = categories.find((c) => c.id === "lifestyle");
+
+  const savingsRate = Math.round(
+    ((savingsCategory?.amount || 0) / takeHome) * 100
+  );
+  const dti = Math.round(((debtCategory?.amount || 0) / takeHome) * 100);
+  const lifestylePct = Math.round(
+    ((lifestyleCategory?.amount || 0) / takeHome) * 100
+  );
+  const totalDebt = Object.values(user.debts || {}).reduce((s, v) => s + v, 0);
+
+  const getNudge = () => {
+    if (track.id === "debt-first") {
+      if (dti > 15) {
+        return `Your debt repayments are ${dti}% of take-home — above the 15% threshold. Prioritising debt clearance now will free up R ${(
+          debtCategory?.amount || 0
+        ).toLocaleString("en-ZA")}/month within your payoff window.`;
+      }
+      if (totalDebt > 200000) {
+        return `With R ${totalDebt.toLocaleString(
+          "en-ZA"
+        )} in total debt, the Debt First track targets your highest-interest obligations first — typically credit cards at 20%+ before vehicle finance at 13%.`;
+      }
+      return `Your credit card interest is costing you more than an ETF would earn you right now. Clear debt first, then invest the freed-up cash flow.`;
+    }
+
+    if (track.id === "balanced-growth") {
+      if (lifestylePct > 25) {
+        return `Your lifestyle spending is ${lifestylePct}% of take-home — watch for creep here. On the Balanced Growth track, keeping lifestyle below 25% protects your savings contributions.`;
+      }
+      if (savingsRate < 10) {
+        return `You're currently saving ${savingsRate}% of take-home. The Balanced Growth track targets 15% — increasing by R ${Math.round(
+          takeHome * 0.05
+        ).toLocaleString("en-ZA")}/month would close that gap.`;
+      }
+      return `Your expenses are growing — make sure your savings rate grows with your income. On R ${takeHome.toLocaleString(
+        "en-ZA"
+      )} take-home, 15% savings means R ${Math.round(
+        takeHome * 0.15
+      ).toLocaleString("en-ZA")}/month.`;
+    }
+
+    if (track.id === "aggressive-invest") {
+      if (savingsRate >= 15) {
+        return `You're saving ${savingsRate}% of take-home — strong position. At R ${(
+          savingsCategory?.amount || 0
+        ).toLocaleString(
+          "en-ZA"
+        )}/month into ETFs at 9%, you're on track to reach R ${Math.round(
+          (savingsCategory?.amount || 0) * ((Math.pow(1.0075, 60) - 1) / 0.0075)
+        ).toLocaleString("en-ZA")} in 5 years.`;
+      }
+      return `You've hit your monthly investment target. To reach R300K by year 5, you need R ${Math.round(
+        300000 / ((Math.pow(1.0075, 60) - 1) / 0.0075)
+      ).toLocaleString("en-ZA")}/month at 9% annual growth.`;
+    }
+
+    return track.nudge;
+  };
+
   return (
     <div className="tracks-nudge">
-      <p className="tracks-nudge__label">Sample nudge</p>
-      <p className="tracks-nudge__body">"{nudge}"</p>
+      <p className="tracks-nudge__label">Your nudge</p>
+      <p className="tracks-nudge__body">"{getNudge()}"</p>
     </div>
   );
 }
@@ -359,9 +399,12 @@ function TrackRationale({ track }) {
 }
 
 export default function StrategyTracks() {
-  const savedTrack = localStorage.getItem("selectedTrack") || "balanced-growth";
-  const [selectedId, setSelectedId] = useState(savedTrack);
+  const { trackId } = useParams();
+  const navigate = useNavigate();
   const { user } = useUser();
+
+  const savedTrack = localStorage.getItem("selectedTrack") || "balanced-growth";
+  const [selectedId, setSelectedId] = useState(trackId || savedTrack);
 
   const [progress, setProgress] = useState(() => {
     const saved = localStorage.getItem("milestoneProgress");
@@ -473,7 +516,7 @@ export default function StrategyTracks() {
             </div>
 
             <div className="tracks__sidebar">
-              <NudgeCard nudge={selectedTrack.nudge} />
+              <DynamicNudge track={selectedTrack} user={user} />
               <div className="tracks__info-card">
                 <p className="tracks__info-label">What this track avoids</p>
                 <p className="tracks__info-value">{selectedTrack.avoids}</p>
