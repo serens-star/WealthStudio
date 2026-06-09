@@ -74,10 +74,16 @@
 }
 
 .sidebar__link-icon {
-  font-size: 16px;
-  width: 18px;
-  text-align: center;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity var(--transition);
+}
+
+.sidebar__link:hover .sidebar__link-icon,
+.sidebar__link--active .sidebar__link-icon {
+  opacity: 1;
 }
 
 .sidebar__footer {

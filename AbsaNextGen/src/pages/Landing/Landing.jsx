@@ -1,27 +1,32 @@
 import { Link } from "react-router-dom";
+import { BarChart2, Target, FlaskConical, BookOpen } from "lucide-react";
 import "./Landing.css";
 
 const features = [
   {
     id: 1,
+    icon: BarChart2,
     label: "Money Snapshot",
     heading: "See your full financial picture.",
     body: "Your take-home pay, fixed costs, spending breakdown, and goals — all in one view. No abstract numbers. Just clarity.",
   },
   {
     id: 2,
+    icon: Target,
     label: "Strategy Tracks",
     heading: "A five-year plan built for your life.",
     body: "Choose between Debt First, Balanced Growth, or Aggressive Investment. Year-by-year milestones that show you exactly what to do next.",
   },
   {
     id: 3,
+    icon: FlaskConical,
     label: "Simulation Studio",
     heading: "Test decisions before you make them.",
     body: "Should you buy or rent? Finance the car or invest the difference? Run the numbers with real SA context before committing.",
   },
   {
     id: 4,
+    icon: BookOpen,
     label: "Learn",
     heading: "Understand why it matters.",
     body: "Interactive explainers on PAYE, RAs, compound interest, and emergency funds — written for South African young professionals.",
@@ -139,6 +144,9 @@ export default function Landing() {
         <div className="landing__features-grid">
           {features.map((f) => (
             <div key={f.id} className="landing__feature-card">
+              <div className="landing__feature-icon-wrap">
+                <f.icon size={20} className="landing__feature-icon" />
+              </div>
               <span className="landing__feature-label">{f.label}</span>
               <h3 className="landing__feature-heading">{f.heading}</h3>
               <p className="landing__feature-body">{f.body}</p>

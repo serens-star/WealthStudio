@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
+import { BarChart2, Target, FlaskConical, BookOpen } from "lucide-react";
 import "./Onboarding.css";
 
 const steps = [
@@ -294,30 +295,28 @@ export default function Onboarding() {
               <div className="onboarding__welcome-grid">
                 {[
                   {
-                    icon: "📊",
+                    icon: BarChart2,
                     label: "Money Snapshot",
                     desc: "Your financial picture at a glance",
                   },
                   {
-                    icon: "🎯",
+                    icon: Target,
                     label: "Strategy Track",
                     desc: "A five-year plan built for your life",
                   },
                   {
-                    icon: "🔬",
+                    icon: FlaskConical,
                     label: "Simulation Studio",
                     desc: "Test decisions before you make them",
                   },
                   {
-                    icon: "📚",
+                    icon: BookOpen,
                     label: "Learn",
                     desc: "SA finance explained in plain English",
                   },
                 ].map((item) => (
                   <div key={item.label} className="onboarding__welcome-item">
-                    <span className="onboarding__welcome-icon">
-                      {item.icon}
-                    </span>
+                    <item.icon size={22} className="onboarding__welcome-icon" />
                     <div>
                       <p className="onboarding__welcome-label">{item.label}</p>
                       <p className="onboarding__welcome-desc">{item.desc}</p>

@@ -396,6 +396,22 @@
   line-height: 1.7;
 }
 
+.landing__feature-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--color-accent-light);
+  border: 1px solid var(--color-accent-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.landing__feature-icon {
+  color: var(--color-accent);
+}
+
 .landing__sa {
   background: var(--color-surface-raised);
   border-top: 1px solid var(--color-border);

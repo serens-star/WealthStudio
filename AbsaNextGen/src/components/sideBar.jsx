@@ -1,13 +1,21 @@
 import { NavLink } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import {
+  Home,
+  TrendingUp,
+  FlaskConical,
+  BookOpen,
+  User,
+  LogOut,
+} from "lucide-react";
 import "./SideBar.css";
 
 const navItems = [
-  { label: "Home", to: "/", icon: "⊞" },
-  { label: "Tracks", to: "/tracks", icon: "◎" },
-  { label: "Simulate", to: "/simulate", icon: "⟳" },
-  { label: "Learn", to: "/learn", icon: "◈" },
-  { label: "Profile", to: "/profile", icon: "◉" },
+  { label: "Home", to: "/", icon: Home },
+  { label: "Tracks", to: "/tracks", icon: TrendingUp },
+  { label: "Simulate", to: "/simulate", icon: FlaskConical },
+  { label: "Learn", to: "/learn", icon: BookOpen },
+  { label: "Profile", to: "/profile", icon: User },
 ];
 
 export default function SideBar({ onLogout }) {
@@ -30,7 +38,7 @@ export default function SideBar({ onLogout }) {
               isActive ? "sidebar__link sidebar__link--active" : "sidebar__link"
             }
           >
-            <span className="sidebar__link-icon">{item.icon}</span>
+            <item.icon size={16} className="sidebar__link-icon" />
             {item.label}
           </NavLink>
         ))}
@@ -42,7 +50,7 @@ export default function SideBar({ onLogout }) {
           <span className="sidebar__user-name">{user?.name || "User"}</span>
         </div>
         <button className="sidebar__logout" onClick={onLogout}>
-          <span className="sidebar__link-icon">→</span>
+          <LogOut size={16} className="sidebar__link-icon" />
           Log out
         </button>
       </div>
