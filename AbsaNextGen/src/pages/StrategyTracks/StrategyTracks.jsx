@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { tracks } from "../../data/tracksData";
 import { useUser } from "../../context/UserContext";
 import { useParams, useNavigate } from "react-router-dom";
+import { AlertTriangle, Lightbulb, Flag } from "lucide-react";
 import "./StrategyTracks.css";
 
 const STATUS = {
@@ -283,7 +284,7 @@ function YearTimeline({ progress, track }) {
               overallPercent === 100 ? "done" : "locked"
             }`}
           >
-            {overallPercent === 100 ? "✓" : "🎯"}
+            {overallPercent === 100 ? "✓" : <Flag size={12} />}
           </div>
           <span className="year-timeline__marker-label">Goal reached</span>
         </div>
@@ -334,7 +335,9 @@ function RecommendationBanner({ user, selectedId, onSelect }) {
 
   return (
     <div className={`rec-banner ${urgent ? "rec-banner--urgent" : ""}`}>
-      <div className="rec-banner__icon">{urgent ? "⚠" : "💡"}</div>
+      <div className="rec-banner__icon">
+        {urgent ? <AlertTriangle size={18} /> : <Lightbulb size={18} />}
+      </div>
       <div className="rec-banner__content">
         <p className="rec-banner__title">
           Based on your numbers, we recommend{" "}
@@ -405,7 +408,13 @@ export default function StrategyTracks() {
 
   const savedTrack = localStorage.getItem("selectedTrack") || "balanced-growth";
   const [selectedId, setSelectedId] = useState(trackId || savedTrack);
-
+  
+  useEffect(() => {
+    if (trackId && trackId !== selectedId) {
+      setSelectedId(trackId);
+    }
+  }, [trackId]);
+  
   const [progress, setProgress] = useState(() => {
     const saved = localStorage.getItem("milestoneProgress");
     return saved ? JSON.parse(saved) : {};
@@ -420,8 +429,8 @@ export default function StrategyTracks() {
   const handleSelect = (id) => {
     setSelectedId(id);
     localStorage.setItem("selectedTrack", id);
+    navigate(`/tracks/${id}`);
   };
-
   const cycleStatus = (itemId) => {
     setProgress((prev) => {
       const current = prev[itemId] || STATUS.NOT_STARTED;
